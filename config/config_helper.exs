@@ -1,4 +1,4 @@
-defmodule ConfigHelper do
+def module ConfigHelper do
   require Logger
 
   import Bitwise
