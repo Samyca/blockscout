@@ -5,9 +5,11 @@ services:
     image: nginx
     container_name: proxy
     extra_hosts:
-      - 'host.docker.internal:host-gateway'
+      - 'host.docker.internal,stats.devel.place,visualizer.devel.place,explorer.devel.place:host-gateway'
     volumes:
       - "../proxy:/etc/nginx/templates"
+    env_file:
+      - ../envs/common-proxy.env
     environment:
       BACK_PROXY_PASS: ${BACK_PROXY_PASS:-http://backend:4000}
       FRONT_PROXY_PASS: ${FRONT_PROXY_PASS:-http://frontend:3000}
