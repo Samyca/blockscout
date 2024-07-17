@@ -1,0 +1,9 @@
+version: '3.9'
+
+services:
+  block_redis_db:
+    image: 'redis:alpine'
+    container_name: blockscout_redis_db
+    command: redis-server
+    volumes:
+      - ./block_redis_data:/data

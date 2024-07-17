@@ -1,0 +1,88 @@
+version: '3.9'
+
+services:
+  block_redis_db:
+    extends:
+      file: ./services/redis.yml
+      service: block_redis_db
+
+  block_db_init:
+    extends:
+      file: ./services/db.yml
+      service: block_db_init
+
+  block_db:
+    depends_on:
+      block_db_init:
+        condition: service_completed_successfully
+    extends:
+      file: ./services/db.yml
+      service: block_db
+
+  block_backend:
+    depends_on:
+      - block_db
+      - block_redis_db
+    extends:
+      file: ./services/backend.yml
+      service: block_backend
+    links:
+      - block_db:database
+    environment:
+        ETHEREUM_JSONRPC_VARIANT: 'geth'
+        BLOCK_TRANSFORMER: 'clique'
+
+  visualizer:
+    extends:
+      file: ./services/visualizer.yml
+      service: visualizer
+
+  block_sig_provider:
+    extends:
+      file: ./services/sig-provider.yml
+      service: block_sig_provider
+
+  block_frontend:
+    depends_on:
+      - block_backend
+    extends:
+      file: ./services/frontend.yml
+      service: block_frontend
+
+  block_stats_db_init:
+    extends:
+      file: ./services/stats.yml
+      service: block_stats_db_init
+
+  block_stats_db:
+    depends_on:
+      block_stats_db_init:
+        condition: service_completed_successfully
+    extends:
+      file: ./services/stats.yml
+      service: block_stats_db
+
+  block_stats:
+    depends_on:
+      - block_stats_db
+      - block_backend
+    extends:
+      file: ./services/stats.yml
+      service: block_stats
+
+  user-ops-indexer:
+    depends_on:
+      - block_db
+      - block_backend
+    extends:
+      file: ./services/user-ops-indexer.yml
+      service: user-ops-indexer
+
+  block_proxy:
+    depends_on:
+      - block_backend
+      - block_frontend
+      - block_stats
+    extends:
+      file: ./services/nginx.yml
+      service: block_proxy
