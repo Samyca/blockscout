@@ -72,3 +72,11 @@ dump.rdb
 /envs/common-stats.env
 /envs/common-user-ops-indexer.env
 /envs/common-visualizer.env
+
+/proxy/default.conf.template
+/proxy/microservices.conf.template
+
+/services/blockscout-db-data/
+/services/logs/
+/services/redis-data/
+/services/stats-db-data/
