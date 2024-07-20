@@ -66,4 +66,9 @@ dump.rdb
 *.env.local
 *.env.staging
 
-!envs/*
+/envs/common-blockscout.env
+/envs/common-frontend.env
+/envs/common-smart-contract-verifier.env
+/envs/common-stats.env
+/envs/common-user-ops-indexer.env
+/envs/common-visualizer.env
